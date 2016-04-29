@@ -7,16 +7,25 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import net.alorse.applistgrability.R;
 import net.alorse.applistgrability.adapter.CategoryGridAdapter;
 import net.alorse.applistgrability.provider.AppsProvider;
+import net.alorse.applistgrability.util.actionCommon;
+import net.alorse.applistgrability.util.actionFiles;
 
 import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
 import butterknife.InjectView;
 import butterknife.ButterKnife;
 import static net.alorse.applistgrability.constanst.AppConstants.CATEGORY;
+import static net.alorse.applistgrability.constanst.AppConstants.FILENAME;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,35 +33,55 @@ public class MainActivity extends AppCompatActivity {
     GridView gridView;
 
     AppsProvider appsProvider;
+    actionCommon common;
+    actionFiles files;
     JSONObject data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+        setTitle(getResources().getString(R.string.categories));
         appsProvider = new AppsProvider();
-        data = appsProvider.loadData();
-        gridView.setAdapter(new CategoryGridAdapter(data));
-        listenergridView();
+        common = new actionCommon();
+        files = new actionFiles();
+        if(common.isOnline(this)){
+            data = appsProvider.loadData();
+            gridView.setAdapter(new CategoryGridAdapter(data));
+            listenergridView();
+            saveInfo();
+        } else {
+            Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_LONG).show();
+            if (files.exists(FILENAME, this)) {
+                data = files.read(FILENAME, this);
+                gridView.setAdapter(new CategoryGridAdapter(data));
+                listenergridView();
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.no_cache, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     public void listenergridView(){
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id){
-                try {
-                    Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
-                    Bundle arguments = new Bundle();
-                    String CatName = parent.getItemAtPosition(pos).toString();
-                    arguments.putString(CATEGORY, data.getJSONArray(CatName).toString());
-                    intent.putExtras(arguments);
-                    startActivity(intent);
-                } catch (Exception e){
-                    Log.e("Error", e.toString());
-                    e.printStackTrace();
-                }
-
+            try {
+                Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
+                Bundle arguments = new Bundle();
+                String CatName = parent.getItemAtPosition(pos).toString();
+                arguments.putString(CATEGORY, data.getJSONArray(CatName).toString());
+                arguments.putString("CAT_NAME", CatName);
+                intent.putExtras(arguments);
+                startActivity(intent);
+            } catch (Exception e){
+                Log.e("Error", e.toString());
+                e.printStackTrace();
+            }
             }
         });
+    }
+    public void saveInfo(){
+        files.create(FILENAME, data, this);
     }
 }
