@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">AppListGrability</string>
+    <string name="app_name">Wallet Apps Grability</string>
     <string name="app_list">App List</string>
+    <string name="categories">Wallet Categories</string>
+    <string name="no_internet">No internet connection.</string>
+    <string name="no_cache">There is no stored cache.</string>
 </resources>
