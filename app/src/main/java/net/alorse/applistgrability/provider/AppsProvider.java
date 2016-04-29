@@ -25,7 +25,7 @@ public class AppsProvider {
     HttpProvider httpProvider;
 
     Response data;
-    public void load2(){
+    public JSONObject loadData(){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -33,10 +33,11 @@ public class AppsProvider {
         try{
             data = httpProvider.get(SERVER_URL);
             JSONObject obj = new JSONObject(data.body().string()).getJSONObject("feed");
-            JSONCategories(obj);
+            return JSONCategories(obj);
         }catch(Exception e){
             Log.e("Error", e.toString());
             e.printStackTrace();
+            return null;
         }
     }
     public JSONObject JSONCategories(JSONObject obj){
