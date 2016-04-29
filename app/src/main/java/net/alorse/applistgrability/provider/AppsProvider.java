@@ -7,8 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
