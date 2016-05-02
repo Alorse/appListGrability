@@ -37,7 +37,7 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
-
+        overridePendingTransition(R.anim.activity_open_translate, R.anim.activity_close_scale);
         if(getResources().getBoolean(R.bool.portrait_only)){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -50,6 +50,18 @@ public class CategoryActivity extends AppCompatActivity {
             listenerAppTap();
             Log.e("NumColums", getResources().getInteger(R.integer.num_columns) + " _ " + gridApps.getNumColumns());
         }catch (Exception e){}
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.activity_open_scale,R.anim.activity_close_translate);
+    }
+    @Override
+    public void onBackPressed(){
+        super.onPause();
+        overridePendingTransition(R.anim.activity_open_scale,R.anim.activity_close_translate);
+        finish();
     }
 
     private void listenerAppTap() {
