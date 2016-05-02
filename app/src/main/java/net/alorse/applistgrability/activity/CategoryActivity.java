@@ -29,9 +29,7 @@ public class CategoryActivity extends AppCompatActivity {
         setTitle(getIntent().getStringExtra("CAT_NAME"));
         try {
             Apps = new JSONArray(getIntent().getStringExtra(CATEGORY));
-            Log.e(getClass().getName(), Apps.toString());
             gridApps.setAdapter(new AppsAdapter(Apps));
-
         }catch (Exception e){}
     }
 }

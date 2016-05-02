@@ -1,11 +1,15 @@
 package net.alorse.applistgrability.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import net.alorse.applistgrability.R;
 
@@ -22,7 +26,7 @@ public class AppsAdapter extends BaseAdapter {
 
     public AppsAdapter(JSONArray data){
         try{
-            apps = data;
+            this.apps = data;
             int length = apps.length();
             for (int i=0; i<length;i++){
                 String appName = apps.getJSONObject(i).getJSONObject("im:name").getString("label");
@@ -59,9 +63,17 @@ public class AppsAdapter extends BaseAdapter {
         try {
             String appName = getItem(position).getJSONObject("im:name").getString("label");
             ((TextView) convertView.findViewById(R.id.appName)).setText(appName);
+
             String companyName = getItem(position).getJSONObject("rights").getString("label");
             ((TextView) convertView.findViewById(R.id.companyName)).setText(companyName);
-        }catch (Exception e){}
+
+            ImageView mImageView = (ImageView) convertView.findViewById(R.id.imageApp);
+            JSONArray images  = getItem(position).getJSONArray("im:image");
+            JSONObject bigImage = (JSONObject) images.get(images.length()-1);
+            Picasso.with(parent.getContext()).load(bigImage.getString("label")).into(mImageView);
+        }catch (Exception e){
+            Log.e("getView AppsAdapter", e.toString());
+        }
 
         return convertView;
     }

@@ -1,7 +1,6 @@
 package net.alorse.applistgrability.util;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
 import org.json.JSONObject;
