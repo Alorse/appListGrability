@@ -11,6 +11,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/gridView"
         android:listSelector="@android:color/transparent"
-        android:numColumns="@integer/num_columns"
         android:layout_alignParentStart="true" />
 </RelativeLayout>

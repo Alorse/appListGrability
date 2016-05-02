@@ -1,10 +1,12 @@
 package net.alorse.applistgrability.activity;
 
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,12 +37,18 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+
+        if(getResources().getBoolean(R.bool.portrait_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         ButterKnife.inject(this);
         setTitle(getIntent().getStringExtra("CAT_NAME"));
         try {
             Apps = new JSONArray(getIntent().getStringExtra(CATEGORY));
             gridApps.setAdapter(new AppsAdapter(Apps));
             listenerAppTap();
+            Log.e("NumColums", getResources().getInteger(R.integer.num_columns) + " _ " + gridApps.getNumColumns());
         }catch (Exception e){}
     }
 

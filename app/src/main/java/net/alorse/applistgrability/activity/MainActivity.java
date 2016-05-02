@@ -1,6 +1,7 @@
 package net.alorse.applistgrability.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(getResources().getBoolean(R.bool.portrait_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+        }
+
         ButterKnife.inject(this);
         setTitle(getResources().getString(R.string.categories));
         appsProvider = new AppsProvider();
@@ -56,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 
     public void listenergridView(){
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
