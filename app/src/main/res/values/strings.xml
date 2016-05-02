@@ -4,4 +4,6 @@
     <string name="categories">Wallet Categories</string>
     <string name="no_internet">No internet connection.</string>
     <string name="no_cache">There is no stored cache.</string>
+    <string name="summary">Sumary:</string>
+    <string name="ok">OK</string>
 </resources>
